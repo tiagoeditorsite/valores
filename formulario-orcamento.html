@@ -1,0 +1,267 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Orçamento de edição · ProClip</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@400;500;600;700&display=swap">
+<style>
+:root{
+  --bg:#07040f; --panel:#1b0f3d; --line:#3b1d80; --accent:#8b3dff; --accent2:#a855f7;
+  --fg:#f3efff; --muted:#c4b9e6; --green:#22c55e; --red:#fca5a5;
+  --display:'Bebas Neue',Impact,'Arial Narrow',sans-serif;
+  --body:'Barlow','Segoe UI',system-ui,sans-serif;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{background:var(--bg);-webkit-text-size-adjust:100%}
+body{margin:0;color:var(--fg);font-family:var(--body);font-size:20px;line-height:1.45;
+  background:radial-gradient(900px 500px at 50% -80px,rgba(91,33,182,.55),rgba(7,4,15,0)),var(--bg);
+  padding:24px max(16px,env(safe-area-inset-right,0px)) 56px max(16px,env(safe-area-inset-left,0px))}
+.wrap{max-width:640px;margin:0 auto;display:flex;flex-direction:column;gap:22px}
+.tag{align-self:flex-start;padding:8px 14px;border:1.5px solid #5b21b6;border-radius:10px;background:rgba(91,33,182,.22);color:#a78bfa;font-weight:600;font-size:15px;letter-spacing:2px}
+h1{margin:0;font-family:var(--display);font-weight:400;font-size:64px;line-height:.95;letter-spacing:1px}
+h1 span{display:block;color:var(--accent);text-shadow:0 0 24px rgba(139,61,255,.6)}
+.intro{margin:0;color:var(--muted);font-size:22px}
+fieldset{border:1.5px solid var(--line);border-radius:18px;background:rgba(27,15,61,.75);padding:20px 18px 18px;margin:0;min-width:0}
+fieldset[hidden]{display:none}
+fieldset.bad{border-color:var(--red);box-shadow:0 0 0 2px rgba(252,165,165,.25)}
+legend{float:left;width:100%;padding:0;margin:0 0 4px;font-family:var(--display);font-size:36px;letter-spacing:1px;line-height:1.1;color:#fff}
+legend small{display:block;font-family:var(--body);font-size:19px;letter-spacing:0;color:var(--muted);margin-top:4px;font-weight:400}
+.opts,.grid,.field{clear:both}
+.opts{display:flex;flex-direction:column;gap:12px;margin-top:10px}
+.grid{display:grid;gap:12px;margin-top:10px}
+.g5{grid-template-columns:repeat(5,1fr)}
+.g4{grid-template-columns:repeat(4,1fr)}
+.opt{position:relative;display:block}
+.opt input{position:absolute;opacity:0;inset:0;width:100%;height:100%;margin:0;cursor:pointer}
+.opt span{display:flex;flex-direction:column;justify-content:center;min-height:68px;padding:14px 16px;border-radius:14px;border:2px solid #5b21b6;background:var(--panel);font-size:24px;font-weight:600;line-height:1.2}
+.opt span small{font-size:18px;font-weight:400;color:var(--muted);margin-top:2px}
+.num span{align-items:center;text-align:center;padding:10px 0;font-family:var(--display);font-size:38px;font-weight:400;letter-spacing:1px}
+.wide{grid-column:1/-1}
+.wide span{align-items:center;text-align:center}
+.opt input:checked+span{border-color:#fff;background:linear-gradient(180deg,#8b3dff,#6d28d9);box-shadow:0 0 18px rgba(139,61,255,.65)}
+.opt input:focus-visible+span{outline:3px solid #fff;outline-offset:2px}
+.field{display:flex;align-items:center;gap:14px;margin-top:10px}
+.field input{width:150px;min-height:72px;padding:8px 14px;border-radius:14px;border:2px solid #5b21b6;background:#0d0720;color:#fff;font-family:var(--display);font-size:46px;text-align:center;letter-spacing:1px}
+.field input:focus-visible{outline:3px solid #fff;outline-offset:2px}
+.field label{font-size:24px;font-weight:600}
+.err{display:none;margin:12px 0 0;color:var(--red);font-size:20px;font-weight:600}
+fieldset.bad .err{display:block}
+.send{display:flex;align-items:center;justify-content:center;gap:14px;width:100%;min-height:92px;padding:16px;border:0;border-radius:18px;background:linear-gradient(180deg,#22c55e,#15a34a);color:#fff;font-family:var(--display);font-size:38px;letter-spacing:1.5px;line-height:1.05;text-align:center;cursor:pointer;box-shadow:0 0 28px rgba(34,197,94,.55);border:2px solid #86efac}
+.send svg{flex:none;width:52px;height:52px;fill:#fff}
+.send.pending{background:linear-gradient(180deg,#ef4444,#b91c1c);border-color:#fca5a5;box-shadow:0 0 28px rgba(239,68,68,.5)}
+.send:focus-visible{outline:3px solid #fff;outline-offset:3px}
+.note{margin:0;color:var(--muted);font-size:19px;text-align:center}
+@media (max-width:380px){h1{font-size:54px}.opt span{font-size:22px}.num span{font-size:34px}}
+</style>
+</head>
+<body>
+<main class="wrap">
+  <div class="tag">PROCLIP POST-PRODUCTION</div>
+  <h1>Orçamento <span>de edição</span></h1>
+  <p class="intro">Responda as perguntas abaixo. No final, toque no botão verde para enviar tudo pelo WhatsApp.</p>
+
+  <form id="f" novalidate>
+
+    <div style="display:flex;flex-direction:column;gap:22px">
+
+      <fieldset id="q-tipo" data-name="tipo">
+        <legend>1. Que tipo de vídeo você precisa?</legend>
+        <div class="opts">
+          <label class="opt"><input type="radio" name="tipo" value="Vertical"><span>Vertical<small>Reels, TikTok e Shorts</small></span></label>
+          <label class="opt"><input type="radio" name="tipo" value="YouTube"><span>Vídeo longo<small>YouTube</small></span></label>
+          <label class="opt"><input type="radio" name="tipo" value="Vertical e YouTube"><span>Os dois</span></label>
+        </div>
+        <p class="err">Falta responder esta pergunta.</p>
+      </fieldset>
+
+      <fieldset id="q-vqtd" data-name="vqtd" hidden>
+        <legend>2. Quantos vídeos verticais por semana?</legend>
+        <div class="grid g5" id="g-vqtd"></div>
+        <p class="err">Falta responder esta pergunta.</p>
+      </fieldset>
+
+      <fieldset id="q-vedit" data-name="vedit" hidden>
+        <legend>3. Como você quer a edição dos verticais?</legend>
+        <div class="opts">
+          <label class="opt"><input type="radio" name="vedit" value="Simples"><span>Simples<small>Cortes, legendas e ajustes básicos</small></span></label>
+          <label class="opt"><input type="radio" name="vedit" value="Avançada"><span>Avançada<small>Efeitos, animações e motion</small></span></label>
+        </div>
+        <p class="err">Falta responder esta pergunta.</p>
+      </fieldset>
+
+      <fieldset id="q-vmin" data-name="vmin" hidden>
+        <legend>4. Quantos minutos de material gravado cada vídeo vertical tem, em média?<small>Digite só o número.</small></legend>
+        <div class="field"><input type="number" inputmode="numeric" pattern="[0-9]*" min="1" max="600" id="vmin" name="vmin" aria-label="Minutos de material gravado por vídeo vertical"><label for="vmin">minutos</label></div>
+        <p class="err">Digite o número de minutos.</p>
+      </fieldset>
+
+      <fieldset id="q-yqtd" data-name="yqtd" hidden>
+        <legend id="l-yqtd">5. Quantos vídeos de YouTube por semana?</legend>
+        <div class="grid g5" id="g-yqtd"></div>
+        <p class="err">Falta responder esta pergunta.</p>
+      </fieldset>
+
+      <fieldset id="q-ymin" data-name="ymin" hidden>
+        <legend id="l-ymin">6. Quantos minutos de material gravado cada vídeo de YouTube tem, em média?<small>Digite só o número.</small></legend>
+        <div class="field"><input type="number" inputmode="numeric" pattern="[0-9]*" min="1" max="600" id="ymin" name="ymin" aria-label="Minutos de material gravado por vídeo de YouTube"><label for="ymin">minutos</label></div>
+        <p class="err">Digite o número de minutos.</p>
+      </fieldset>
+
+      <fieldset id="q-thumb" data-name="thumb" hidden>
+        <legend id="l-thumb">7. Você quer thumbnail?</legend>
+        <div class="opts" id="o-thumb"></div>
+        <p class="err">Falta responder esta pergunta.</p>
+      </fieldset>
+
+      <fieldset id="q-sem" data-name="sem" hidden>
+        <legend id="l-sem">8. Por quantas semanas você quer contratar?<small>4 semanas = 1 mês</small></legend>
+        <div class="grid g4" id="g-sem"></div>
+        <p class="err">Falta responder esta pergunta.</p>
+      </fieldset>
+
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:14px;margin-top:22px">
+      <button type="submit" class="send pending" id="send">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+        <span id="sendTxt">RESPONDA TODAS AS PERGUNTAS PARA ENVIAR</span>
+      </button>
+      <p class="note" id="note">Responda todas as perguntas para liberar o envio.</p>
+    </div>
+  </form>
+</main>
+
+<script>
+(function(){
+var WA_NUMBER='5512988053386';
+var $=function(i){return document.getElementById(i);};
+var form=$('f');
+
+function numberGrid(id,name,max,overLabel){
+  var h='';
+  for(var i=1;i<=max;i++)h+='<label class="opt num"><input type="radio" name="'+name+'" value="'+i+'"><span>'+i+'</span></label>';
+  if(overLabel)h+='<label class="opt wide"><input type="radio" name="'+name+'" value="mais de '+max+'"><span>'+overLabel+'</span></label>';
+  $(id).innerHTML=h;
+}
+numberGrid('g-vqtd','vqtd',10,'Mais de 10');
+numberGrid('g-yqtd','yqtd',10,'Mais de 10');
+numberGrid('g-sem','sem',12,null);
+
+function val(name){var el=form.querySelector('input[name="'+name+'"]:checked');return el?el.value:'';}
+function show(id,on){$(id).hidden=!on;}
+function clearBad(fs){fs.classList.remove('bad');}
+
+var thumbFor='';
+function buildThumb(tipo){
+  var opts;
+  if(tipo==='Vertical')opts=[['Não','Não'],['Nos verticais','Sim']];
+  else if(tipo==='YouTube')opts=[['Não','Não'],['Nos vídeos de YouTube','Sim']];
+  else opts=[['Não','Não'],['Nos verticais','Só nos verticais'],['Nos vídeos de YouTube','Só nos vídeos de YouTube'],['Nos dois','Nos dois']];
+  var h='';
+  opts.forEach(function(o){h+='<label class="opt"><input type="radio" name="thumb" value="'+o[0]+'"><span>'+o[1]+'</span></label>';});
+  $('o-thumb').innerHTML=h;
+}
+
+function renumber(){
+  var v=$('q-vqtd').hidden===false,y=$('q-yqtd').hidden===false;
+  var n=1;
+  var seq=[['q-tipo',null],['q-vqtd',null],['q-vedit',null],['q-vmin',null],['q-yqtd',null],['q-ymin',null],['q-thumb',null],['q-sem',null]];
+  seq.forEach(function(s){
+    var fs=$(s[0]);
+    if(fs.hidden)return;
+    var lg=fs.querySelector('legend'),first=lg.firstChild;
+    first.nodeValue=first.nodeValue.replace(/^\d+\.\s*/,n+'. ');
+    n++;
+  });
+}
+
+function update(){
+  var tipo=val('tipo');
+  var hasV=tipo==='Vertical'||tipo==='Vertical e YouTube';
+  var hasY=tipo==='YouTube'||tipo==='Vertical e YouTube';
+  show('q-vqtd',hasV);show('q-vedit',hasV);show('q-vmin',hasV);
+  show('q-yqtd',hasY);show('q-ymin',hasY);
+  show('q-thumb',!!tipo);show('q-sem',!!tipo);
+  if(tipo&&thumbFor!==tipo){buildThumb(tipo);thumbFor=tipo;}
+  renumber();
+}
+
+form.addEventListener('change',function(e){
+  var fs=e.target.closest('fieldset');if(fs)clearBad(fs);
+  if(e.target.name==='tipo')update();
+  refreshSend();
+});
+form.addEventListener('input',function(e){
+  var fs=e.target.closest('fieldset');if(fs)clearBad(fs);
+  refreshSend();
+});
+
+function minOk(id){var n=parseInt($(id).value,10);return n>=1&&n<=600?n:null;}
+
+function build(){
+  var tipo=val('tipo'),hasV=tipo==='Vertical'||tipo==='Vertical e YouTube',hasY=tipo==='YouTube'||tipo==='Vertical e YouTube';
+  var L=['ORÇAMENTO DE EDIÇÃO','Tipo de vídeo: '+tipo];
+  L.push('Verticais por semana: '+(hasV?val('vqtd'):'0'));
+  if(hasV){
+    L.push('Edição dos verticais: '+val('vedit'));
+    L.push('Material gravado por vídeo vertical: '+minOk('vmin')+' min');
+  }
+  L.push('YouTube por semana: '+(hasY?val('yqtd'):'0'));
+  if(hasY)L.push('Material gravado por vídeo de YouTube: '+minOk('ymin')+' min');
+  L.push('Thumbnail: '+val('thumb'));
+  L.push('Semanas: '+val('sem'));
+  return L.join('\n');
+}
+
+function missing(){
+  var tipo=val('tipo'),bad=[];
+  function need(id,ok){if(!ok)bad.push($(id));}
+  need('q-tipo',!!tipo);
+  if(!tipo)return bad;
+  var hasV=tipo==='Vertical'||tipo==='Vertical e YouTube',hasY=tipo==='YouTube'||tipo==='Vertical e YouTube';
+  if(hasV){need('q-vqtd',!!val('vqtd'));need('q-vedit',!!val('vedit'));need('q-vmin',minOk('vmin')!==null);}
+  if(hasY){need('q-yqtd',!!val('yqtd'));need('q-ymin',minOk('ymin')!==null);}
+  need('q-thumb',!!val('thumb'));
+  need('q-sem',!!val('sem'));
+  return bad;
+}
+function refreshSend(){
+  var tipo=val('tipo'),bad=missing(),btn=$('send'),t=$('sendTxt'),note=$('note');
+  note.style.color='';
+  if(bad.length===0){
+    btn.classList.remove('pending');t.textContent='CONCLUIR E ENVIAR PELO WHATSAPP';
+    note.textContent='Ao tocar, o WhatsApp abre com as suas respostas prontas. É só enviar.';
+  }else{
+    btn.classList.add('pending');
+    t.textContent=!tipo?'RESPONDA TODAS AS PERGUNTAS PARA ENVIAR':(bad.length===1?'FALTA 1 PERGUNTA PARA ENVIAR':'FALTAM '+bad.length+' PERGUNTAS PARA ENVIAR');
+    note.textContent='Responda todas as perguntas para liberar o envio.';
+  }
+}
+function validate(){
+  var bad=missing();
+  bad.forEach(function(fs){fs.classList.add('bad');});
+  return bad;
+}
+
+form.addEventListener('submit',function(e){
+  e.preventDefault();
+  var bad=validate();
+  if(bad.length){
+    bad[0].scrollIntoView({behavior:'smooth',block:'center'});
+    $('note').textContent='Responda as perguntas marcadas em vermelho para continuar.';
+    $('note').style.color='#fca5a5';
+    return;
+  }
+  var url='https://wa.me/'+WA_NUMBER+'?text='+encodeURIComponent(build());
+  window.location.href=url;
+});
+
+update();refreshSend();
+if(window.__TEST)window.__TEST_API={build:build};
+})();
+</script>
+</body>
+</html>
